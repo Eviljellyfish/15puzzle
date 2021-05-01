@@ -11,7 +11,7 @@ public class GameManager : MonoBehaviour
     void Start()
     {
         board = new int[4,4];
-        Debug.Log(board.Rank);
+        
         _camera = Camera.main;
         initiateBoard(board);
     }
@@ -22,10 +22,13 @@ public class GameManager : MonoBehaviour
     }
 
     public void initiateBoard(int[,] board) {
-        for (int i=0; i<board.Length; i++) {
-            for (int j=0; j<board.Length; j++) {
-                int index = i+j*board.Length;
-                Tiles[i+j].GetComponent<Tile>().initialize(index+1, i, j);
+        for (int i=0; i<board.GetLength(0); i++) {
+            for (int j=0; j<board.GetLength(1); j++) {
+                if (i*board.GetLength(0)+j == board.Length-1)
+                    break;
+                int index = i*board.GetLength(0)+j;
+                Debug.Log("index="+index+"i="+i+" j="+j);
+                Tiles[index].GetComponent<Tile>().initialize(index+1, j, i);
             }
         }
     }

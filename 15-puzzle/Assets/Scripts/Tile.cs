@@ -13,6 +13,6 @@ public class Tile : MonoBehaviour, IPointerClickHandler
     }
 
     public void OnPointerClick(PointerEventData eventData) {
-        Debug.Log(this.name+index+posX+posY);
+        Debug.Log(this.name+" index="+index+" x="+posX+" y="+posY);
     }
 }
