@@ -21,11 +21,16 @@ public class Tile : MonoBehaviour, IPointerClickHandler
         Vector2 diff = zeroPos - pos;
         if (((zeroPos - pos) == new Vector2(-1, 0)) || ((zeroPos - pos) == new Vector2(1, 0)) || ((zeroPos - pos) == new Vector2(0, -1)) || ((zeroPos - pos) == new Vector2(0, +1))) {
             Debug.Log("Can swap!");
+            printBoard(gm.board);
+            Debug.Log("Old Position is: "+posX+" "+posY);
             gm.board[(int)zeroPos.y, (int)zeroPos.x] = index;
-            gm.board[posX, posY] = 0;
-            posX = (int)zeroPos.y;
-            posY = (int)zeroPos.x;
-            redraw(diff*150);
+            Debug.Log("Zerro is: "+(int)zeroPos.y+" "+(int)zeroPos.x);
+            gm.board[posY, posX] = 0;
+            posX = (int)zeroPos.x;
+            posY = (int)zeroPos.y;
+            Debug.Log("New Position is: "+posX+" "+posY);
+            redraw(new Vector2(diff.x, -diff.y)*150);
+            printBoard(gm.board);
         }
         else {
             Debug.Log("NO!");
@@ -42,7 +47,6 @@ public class Tile : MonoBehaviour, IPointerClickHandler
     }
 
     public void redraw(Vector2 diff) {
-        // Debug.Log(new Vector3(-225+150*posX, 225-150*posY, 0));
         transform.Translate(diff);
     }
 
@@ -50,9 +54,16 @@ public class Tile : MonoBehaviour, IPointerClickHandler
         for (int i=0; i<board.GetLength(0); i++) {
             for (int j=0; j<board.GetLength(1); j++) {
                 if (board[i, j]==0)
-                    return new Vector2(i, j);
+                    return new Vector2(j, i);
             }
         }
         return new Vector2(-1, -1);
     }
+
+    public void printBoard(int[,] board) {
+        foreach (var tile in board) {
+            Debug.Log(tile);
+        }
+    }
 }
+ 

@@ -29,7 +29,7 @@ public class GameManager : MonoBehaviour
                     break;
                 }
                 int index = i*board.GetLength(0)+j;
-                Debug.Log("index="+index+"i="+i+" j="+j);
+                Debug.Log("index="+index+" i="+i+" j="+j);
                 Tiles[index].GetComponent<Tile>().initialize(index+1, j, i);
                 board[i, j] = index+1;
             }
