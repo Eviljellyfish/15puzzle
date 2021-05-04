@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using TMPro;
 
 
 public class Tile : MonoBehaviour, IPointerClickHandler
@@ -11,6 +12,7 @@ public class Tile : MonoBehaviour, IPointerClickHandler
         this.index = index;
         this.posX = posX;
         this.posY = posY;
+        this.GetComponentInChildren<TextMeshProUGUI>().SetText(index.ToString());
     }
 
     public void OnPointerClick(PointerEventData eventData) {
