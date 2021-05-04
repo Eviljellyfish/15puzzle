@@ -21,16 +21,11 @@ public class Tile : MonoBehaviour, IPointerClickHandler
         Vector2 diff = zeroPos - pos;
         if (((zeroPos - pos) == new Vector2(-1, 0)) || ((zeroPos - pos) == new Vector2(1, 0)) || ((zeroPos - pos) == new Vector2(0, -1)) || ((zeroPos - pos) == new Vector2(0, +1))) {
             Debug.Log("Can swap!");
-            printBoard(gm.board);
-            Debug.Log("Old Position is: "+posX+" "+posY);
             gm.board[(int)zeroPos.y, (int)zeroPos.x] = index;
-            Debug.Log("Zerro is: "+(int)zeroPos.y+" "+(int)zeroPos.x);
             gm.board[posY, posX] = 0;
             posX = (int)zeroPos.x;
             posY = (int)zeroPos.y;
-            Debug.Log("New Position is: "+posX+" "+posY);
             redraw(new Vector2(diff.x, -diff.y)*150);
-            printBoard(gm.board);
         }
         else {
             Debug.Log("NO!");

@@ -6,8 +6,10 @@ public class GameManager : MonoBehaviour
 {
     [SerializeField]
     private GameObject[] Tiles;
+    public GameObject TilePrefab;
     private Camera _camera; 
     public int[,] board;
+    public float startX=-225, startY=225, shift=150;
     void Start()
     {
         board = new int[4,4];
@@ -34,5 +36,10 @@ public class GameManager : MonoBehaviour
                 board[i, j] = index+1;
             }
         }
+    }
+
+    public GameObject generateTile(Vector3 pos) {
+        GameObject go = Instantiate(TilePrefab, pos, new Quaternion());
+        return go;
     }
 }
