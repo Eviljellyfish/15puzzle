@@ -11,20 +11,49 @@ public class GameManager : MonoBehaviour
     private Camera _camera; 
     public int[,] board;
     public float startX=600, startY=600, shift=150;
-    void Start()
-    {
+    private List<int> availableNumbers;
+
+    void Start() {
         board = new int[4,4];
-        
+
+        availableNumbers = new List<int>();
+        for (int i=0; i<board.Length; i++) {
+            availableNumbers.Add(i);
+        }
+        Debug.Log(availableNumbers[0]);
         _camera = Camera.main;
-        initiateBoard(board);
+        initiateShuffledBoard(board);
     }
 
-    void Update()
-    {
+    void Update() {
 
     }
 
-    public void initiateBoard(int[,] board) {
+    public void initiateShuffledBoard(int[,] board) {
+        int pos = 0;
+        for (int i=0; i<board.GetLength(0); i++) {
+            for (int j=0; j<board.GetLength(1); j++) {
+                int index = availableNumbers[Random.Range(0, availableNumbers.Count)];
+                Debug.Log(pos);
+                foreach(var record in availableNumbers) {
+                    Debug.Log("availableNumbers"+record);
+                }
+                availableNumbers.Remove(index);
+                board[i, j] = index;
+                Debug.Log("index="+index+" i="+i+" j="+j);
+                if (index == 0)
+                    continue;
+                Tiles[pos] = Instantiate(TilePrefab);
+                Tiles[pos].transform.SetParent(boardCanvas.transform);
+                Tiles[pos].name = "Square ("+index+")";
+                Tiles[pos].transform.localPosition = new Vector2(startX+shift*j, startY-shift*i);
+                Tiles[pos].GetComponent<Tile>().initialize(index, j, i);
+                pos++;
+            }
+        }
+    }
+
+    public void initiateBoardWithCompleateOrder(int[,] board) {
         for (int i=0; i<board.GetLength(0); i++) {
             for (int j=0; j<board.GetLength(1); j++) {
                 if (i*board.GetLength(0)+j == board.Length-1) {
@@ -46,5 +75,11 @@ public class GameManager : MonoBehaviour
     public GameObject generateTile(Vector2 pos) {
         GameObject go = Instantiate(TilePrefab, pos, new Quaternion());
         return go;
+    }
+
+    public int getNumberFromAvailable(List<int> an) {
+        int randomNumber = Random.Range(0, an.Count);
+        an.Remove(randomNumber);
+        return randomNumber;
     }
 }
