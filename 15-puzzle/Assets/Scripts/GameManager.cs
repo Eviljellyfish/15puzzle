@@ -94,7 +94,7 @@ public class GameManager : MonoBehaviour
                 Tiles.Add(generateTile(index+1, i, j));
                 board[i, j] = index+1;
                 
-                Tiles[index].moveAction += OnTileMove;
+                //Tiles[index].moveAction += OnTileMove;
             }
         }
     }
@@ -105,6 +105,7 @@ public class GameManager : MonoBehaviour
         go.name = "Square ("+index+")";
         go.transform.localPosition = new Vector2(startX+shift*j, startY-shift*i);
         go.GetComponent<Tile>().initialize(index, j, i);
+        go.moveAction += OnTileMove;
         return go;
     }
 
