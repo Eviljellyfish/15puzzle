@@ -5,7 +5,7 @@ using UnityEngine;
 public class GameManager : MonoBehaviour
 {
     [SerializeField]
-    private GameObject[] Tiles;
+    private List<GameObject> Tiles;
     public GameObject TilePrefab;
     public GameObject boardCanvas;
     private Camera _camera; 
@@ -17,6 +17,7 @@ public class GameManager : MonoBehaviour
         board = new int[4,4];
 
         availableNumbers = new List<int>();
+        Tiles = new List<GameObject>();
         for (int i=0; i<board.Length; i++) {
             availableNumbers.Add(i);
         }
@@ -43,11 +44,7 @@ public class GameManager : MonoBehaviour
                 Debug.Log("index="+index+" i="+i+" j="+j);
                 if (index == 0)
                     continue;
-                Tiles[pos] = Instantiate(TilePrefab);
-                Tiles[pos].transform.SetParent(boardCanvas.transform);
-                Tiles[pos].name = "Square ("+index+")";
-                Tiles[pos].transform.localPosition = new Vector2(startX+shift*j, startY-shift*i);
-                Tiles[pos].GetComponent<Tile>().initialize(index, j, i);
+                Tiles.Add(generateTile(index, i, j));
                 pos++;
             }
         }
@@ -72,8 +69,12 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public GameObject generateTile(Vector2 pos) {
-        GameObject go = Instantiate(TilePrefab, pos, new Quaternion());
+    public GameObject generateTile(int index, int i, int j) {
+        GameObject go = Instantiate(TilePrefab);
+        go.transform.SetParent(boardCanvas.transform);
+        go.name = "Square ("+index+")";
+        go.transform.localPosition = new Vector2(startX+shift*j, startY-shift*i);
+        go.GetComponent<Tile>().initialize(index, j, i);
         return go;
     }
 
