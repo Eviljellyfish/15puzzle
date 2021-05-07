@@ -7,6 +7,11 @@ using TMPro;
 
 public class Tile : MonoBehaviour, IPointerClickHandler
 {
+
+    public delegate void SomeAction();
+
+    public event SomeAction moveAction;
+
     private int index, posX, posY;
     public void initialize(int index, int posX, int posY) {
         this.index = index;
@@ -28,19 +33,11 @@ public class Tile : MonoBehaviour, IPointerClickHandler
             posX = (int)zeroPos.x;
             posY = (int)zeroPos.y;
             redraw(new Vector2(diff.x, -diff.y)*150);
+            moveAction?.Invoke();
         }
         else {
             Debug.Log("NO!");
         }
-    }
-
-    public void swapPos(int x, int y, int xx, int yy) {
-        int tmp = x;
-        x = xx;
-        xx = x;
-        tmp = y;
-        y = yy;
-        yy = tmp;
     }
 
     public void redraw(Vector2 diff) {
@@ -61,6 +58,10 @@ public class Tile : MonoBehaviour, IPointerClickHandler
         foreach (var tile in board) {
             Debug.Log(tile);
         }
+    }
+
+    public int getIndex() {
+        return index;
     }
 }
  

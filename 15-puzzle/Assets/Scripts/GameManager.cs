@@ -1,23 +1,26 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.UI;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
     [SerializeField]
-    private List<GameObject> Tiles;
-    public GameObject TilePrefab;
+    private List<Tile> Tiles;
+    public Tile TilePrefab;
     public GameObject boardCanvas;
     private Camera _camera; 
     public int[,] board;
-    public float startX=600, startY=600, shift=150;
+    public float startX=-225, startY=225, shift=150;
     private List<int> availableNumbers;
 
     void Start() {
         board = new int[4,4];
 
         availableNumbers = new List<int>();
-        Tiles = new List<GameObject>();
+        Tiles = new List<Tile>();
+        //
+
         for (int i=0; i<board.Length; i++) {
             availableNumbers.Add(i);
         }
@@ -28,6 +31,35 @@ public class GameManager : MonoBehaviour
 
     void Update() {
 
+    }
+
+    public void OnTileMove() {
+        Debug.Log("Caught Tile move.");
+        if (checkWinCondition()) {
+            for (int i=0; i<board.GetLength(0); i++) {
+                for (int j=0; j<board.GetLength(1); j++) {
+                    if (i==board.GetLength(0)-1 && j==board.GetLength(1)-1)
+                        break;
+                    int index = i*board.GetLength(0)+j;
+                    Tiles[index].GetComponent<Image>().color = Color.green;
+                }
+            }
+            Debug.Log("You Won!!!");
+        }
+    }
+
+    public bool checkWinCondition() {
+        for (int i=0; i<board.GetLength(0); i++) {
+            for (int j=0; j<board.GetLength(1); j++) {
+                if (i==board.GetLength(0)-1 && j==board.GetLength(1)-1)
+                        break;
+                int index = i*board.GetLength(0)+j;
+                if (board[i, j] != (index+1)) {
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 
     public void initiateShuffledBoard(int[,] board) {
@@ -59,18 +91,16 @@ public class GameManager : MonoBehaviour
                 }
                 int index = i*board.GetLength(0)+j;
                 Debug.Log("index="+index+" i="+i+" j="+j);
-                Tiles[index] = Instantiate(TilePrefab);
-                Tiles[index].transform.SetParent(boardCanvas.transform);
-                Tiles[index].name = "Square ("+(index+1)+")";
-                Tiles[index].transform.localPosition = new Vector2(startX+shift*j, startY-shift*i);
-                Tiles[index].GetComponent<Tile>().initialize(index+1, j, i);
+                Tiles.Add(generateTile(index+1, i, j));
                 board[i, j] = index+1;
+                
+                Tiles[index].moveAction += OnTileMove;
             }
         }
     }
 
-    public GameObject generateTile(int index, int i, int j) {
-        GameObject go = Instantiate(TilePrefab);
+    public Tile generateTile(int index, int i, int j) {
+        Tile go = Instantiate(TilePrefab);
         go.transform.SetParent(boardCanvas.transform);
         go.name = "Square ("+index+")";
         go.transform.localPosition = new Vector2(startX+shift*j, startY-shift*i);
