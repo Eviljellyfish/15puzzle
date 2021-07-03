@@ -14,23 +14,34 @@ public class GameManager : MonoBehaviour
     public float startX=-225, startY=225, shift=150;
     private List<int> availableNumbers;
 
-    void Start() {
-        board = new int[4,4];
+    public void Start() {
+        InitiateBoard();
 
-        availableNumbers = new List<int>();
-        Tiles = new List<Tile>();
-        //
+        //Debug.Log(availableNumbers[0]);
 
-        for (int i=0; i<board.Length; i++) {
-            availableNumbers.Add(i);
-        }
-        Debug.Log(availableNumbers[0]);
         _camera = Camera.main;
         initiateShuffledBoard(board);
     }
 
-    void Update() {
+    public void InitiateBoard() {
+        board = new int[4,4];
+        availableNumbers = new List<int>();
+        Tiles = new List<Tile>();
 
+        FillListWithAvailableNumbers(availableNumbers);
+    }
+
+    public void FillListWithAvailableNumbers(List<int> list) {
+        for (int i=0; i<board.Length; i++) {
+            list.Add(i);
+        }
+    }
+
+    public void ResetBoard() {
+        FillListWithAvailableNumbers(availableNumbers);
+        removeTiles();
+        InitiateBoard();
+        initiateShuffledBoard(board);
     }
 
     public void OnTileMove() {
@@ -113,5 +124,11 @@ public class GameManager : MonoBehaviour
         int randomNumber = Random.Range(0, an.Count);
         an.Remove(randomNumber);
         return randomNumber;
+    }
+
+    public void removeTiles() {
+        foreach(var Tile in Tiles) {
+            Destroy(Tile.gameObject);
+        }
     }
 }
