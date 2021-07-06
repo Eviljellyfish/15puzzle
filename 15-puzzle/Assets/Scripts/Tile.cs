@@ -27,7 +27,7 @@ public class Tile : MonoBehaviour, IPointerClickHandler
         Vector2 pos = new Vector2(posX, posY);
         Vector2 diff = zeroPos - pos;
         if (((zeroPos - pos) == new Vector2(-1, 0)) || ((zeroPos - pos) == new Vector2(1, 0)) || ((zeroPos - pos) == new Vector2(0, -1)) || ((zeroPos - pos) == new Vector2(0, +1))) {
-            Debug.Log("Can swap!");
+            //Debug.Log("Can swap!");
             gm.board[(int)zeroPos.y, (int)zeroPos.x] = index;
             gm.board[posY, posX] = 0;
             posX = (int)zeroPos.x;
@@ -36,7 +36,7 @@ public class Tile : MonoBehaviour, IPointerClickHandler
             moveAction?.Invoke();
         }
         else {
-            Debug.Log("NO!");
+            //Debug.Log("NO!");
         }
     }
 
@@ -56,7 +56,7 @@ public class Tile : MonoBehaviour, IPointerClickHandler
 
     public void printBoard(int[,] board) {
         foreach (var tile in board) {
-            Debug.Log(tile);
+            //Debug.Log(tile);
         }
     }
 

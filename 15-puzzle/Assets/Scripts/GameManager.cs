@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine.UI;
 using UnityEngine;
 
@@ -20,7 +21,10 @@ public class GameManager : MonoBehaviour
         //Debug.Log(availableNumbers[0]);
 
         _camera = Camera.main;
-        initiateShuffledBoard(board);
+        // initiateShuffledBoard(board);
+        // while (!CheckSolvability(board))
+        //     initiateShuffledBoard(board);
+        ResetBoard();
     }
 
     public void InitiateBoard() {
@@ -42,6 +46,9 @@ public class GameManager : MonoBehaviour
         removeTiles();
         InitiateBoard();
         initiateShuffledBoard(board);
+        while (!CheckSolvability(board)) {
+            ResetBoard();
+        }
     }
 
     public void OnTileMove() {
@@ -73,18 +80,36 @@ public class GameManager : MonoBehaviour
         return true;
     }
 
+    public bool CheckSolvability(int[,] board) {
+        int sum = 0;
+        var array = board.Cast<int>().ToArray();
+        for (int i=0; i<array.Length; i++) {
+            if (array[i]==0) {
+                sum += i%board.GetLength(0)+1;
+                continue;
+            }
+            for(int j=i;  j<array.Length; j++) {
+                if (array[j]<array[i]) {
+                    sum++;
+                }
+            }
+        }
+        Debug.Log(sum);
+        return (sum%2==0)? true : false;
+    }
+
     public void initiateShuffledBoard(int[,] board) {
         int pos = 0;
         for (int i=0; i<board.GetLength(0); i++) {
             for (int j=0; j<board.GetLength(1); j++) {
                 int index = availableNumbers[Random.Range(0, availableNumbers.Count)];
-                Debug.Log(pos);
+                //Debug.Log(pos);
                 foreach(var record in availableNumbers) {
-                    Debug.Log("availableNumbers"+record);
+                    //Debug.Log("availableNumbers"+record);
                 }
                 availableNumbers.Remove(index);
                 board[i, j] = index;
-                Debug.Log("index="+index+" i="+i+" j="+j);
+                //Debug.Log("index="+index+" i="+i+" j="+j);
                 if (index == 0)
                     continue;
                 Tiles.Add(generateTile(index, i, j));
@@ -101,7 +126,7 @@ public class GameManager : MonoBehaviour
                     break;
                 }
                 int index = i*board.GetLength(0)+j;
-                Debug.Log("index="+index+" i="+i+" j="+j);
+                //Debug.Log("index="+index+" i="+i+" j="+j);
                 Tiles.Add(generateTile(index+1, i, j));
                 board[i, j] = index+1;
                 
