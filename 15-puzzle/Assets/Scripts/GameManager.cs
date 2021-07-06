@@ -46,7 +46,7 @@ public class GameManager : MonoBehaviour
         removeTiles();
         InitiateBoard();
         initiateShuffledBoard(board);
-        while (!CheckSolvability(board)) {
+        if (!CheckSolvability(board)) {
             ResetBoard();
         }
     }
