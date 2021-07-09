@@ -36,13 +36,13 @@ public class GameManager : MonoBehaviour
     }
 
     public void FillListWithAvailableNumbers(List<int> list) {
+        list.Clear();
         for (int i=0; i<board.Length; i++) {
             list.Add(i);
         }
     }
 
     public void ResetBoard() {
-        FillListWithAvailableNumbers(availableNumbers);
         removeTiles();
         InitiateBoard();
         initiateShuffledBoard(board);
@@ -52,7 +52,7 @@ public class GameManager : MonoBehaviour
     }
 
     public void OnTileMove() {
-        Debug.Log("Caught Tile move.");
+        //Debug.Log("Caught Tile move.");
         if (checkWinCondition()) {
             for (int i=0; i<board.GetLength(0); i++) {
                 for (int j=0; j<board.GetLength(1); j++) {
@@ -84,12 +84,13 @@ public class GameManager : MonoBehaviour
         int sum = 0;
         var array = board.Cast<int>().ToArray();
         for (int i=0; i<array.Length; i++) {
+        //     Debug.Log(" index="+i+" row="+(i/board.GetLength(0)+1+" number="+array[i]));
             if (array[i]==0) {
-                sum += i%board.GetLength(0)+1;
+                sum += i/board.GetLength(0)+1;
                 continue;
             }
             for(int j=i;  j<array.Length; j++) {
-                if (array[j]<array[i]) {
+                if (array[j]<array[i] && array[j]!=0) {
                     sum++;
                 }
             }

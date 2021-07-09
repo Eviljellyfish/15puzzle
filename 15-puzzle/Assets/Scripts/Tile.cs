@@ -21,7 +21,7 @@ public class Tile : MonoBehaviour, IPointerClickHandler
     }
 
     public void OnPointerClick(PointerEventData eventData) {
-        Debug.Log(this.name+" index="+index+" x="+posX+" y="+posY);
+        //Debug.Log(this.name+" index="+index+" x="+posX+" y="+posY);
         GameManager gm = Object.FindObjectOfType<GameManager>();
         Vector2 zeroPos = findZero(gm.board);
         Vector2 pos = new Vector2(posX, posY);
