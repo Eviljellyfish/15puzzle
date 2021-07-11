@@ -15,15 +15,18 @@ public class GameManager : MonoBehaviour
     public float startX=-225, startY=225, shift=150;
     private List<int> availableNumbers;
 
+    public delegate void SomeAction();
+
+    public static event SomeAction OnTileMoved;
+
+    public static event SomeAction OnWonCondition;
+
     public void Start() {
         InitiateBoard();
 
         //Debug.Log(availableNumbers[0]);
 
         _camera = Camera.main;
-        // initiateShuffledBoard(board);
-        // while (!CheckSolvability(board))
-        //     initiateShuffledBoard(board);
         ResetBoard();
     }
 
@@ -53,6 +56,7 @@ public class GameManager : MonoBehaviour
 
     public void OnTileMove() {
         //Debug.Log("Caught Tile move.");
+        OnTileMoved?.Invoke();
         if (checkWinCondition()) {
             for (int i=0; i<board.GetLength(0); i++) {
                 for (int j=0; j<board.GetLength(1); j++) {
@@ -63,6 +67,7 @@ public class GameManager : MonoBehaviour
                 }
             }
             Debug.Log("You Won!!!");
+            OnWonCondition?.Invoke();
         }
     }
 
