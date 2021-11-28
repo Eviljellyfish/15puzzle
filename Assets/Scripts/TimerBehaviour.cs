@@ -31,6 +31,7 @@ public class TimerBehaviour : MonoBehaviour
     public void ResetTimer() {
         _minutes = 0;
         _seconds = 0;
+        UpdateUIText();
     }
 
     public void UpdateUIText() {
